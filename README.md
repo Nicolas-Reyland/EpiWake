@@ -1,4 +1,4 @@
-# EpiWatch
+# EpiWake
 
 A new Flutter project.
 
