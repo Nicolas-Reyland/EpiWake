@@ -32,11 +32,22 @@ class Zeus {
         .map((event) => ZClass.fromICal(event))
         .whereType<ZClass>()
         .toList();
-    // print('classes: ${inspect(classes)}');
   }
 
+  /// Removes past classes and orders them by start date
+  void preprocess() {
+    var now = DateTime.now();
+    classes = classes.where((zclass) => zclass.start.isAfter(now)).toList();
+    classes.sort((a, b) => a.start.compareTo(b.start));
+  }
+
+  @override
+  String toString() => 'Zeus:[${classes.join()}]';
+
   Zeus.fromJson(Map<String, dynamic> json)
-      : classes = json["classes"].map<ZClass>(ZClass.fromJson).toList();
+      : classes = json["classes"]
+            .map<ZClass>((zclass) => ZClass.fromJson(zclass))
+            .toList();
 
   Map<String, dynamic> toJson() =>
       {"classes": classes.map((zclass) => zclass.toJson()).toList()};
@@ -77,9 +88,8 @@ class ZClass {
   }
 
   @override
-  String toString() {
-    return 'ZClass{\n\tstart: $start\n\tend: $end\n\tdescription: $description\n\tsummary: $summary\n\tlocation: $location\n\turl: $url\n}\n';
-  }
+  String toString() =>
+      'ZClass{\n\tstart: $start\n\tend: $end\n\tdescription: $description\n\tsummary: $summary\n\tlocation: $location\n\turl: $url\n}\n';
 
   Map<String, dynamic> toJson() => {
         "start": start.millisecondsSinceEpoch,
