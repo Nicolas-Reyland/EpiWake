@@ -1,0 +1,2 @@
+ - Don't show next day as long as first class of today hasn't started
+ - Get exact type of class ("Examen", "Cours magistral", etc)
